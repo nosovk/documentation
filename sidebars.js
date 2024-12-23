@@ -498,9 +498,31 @@ module.exports = {
             id: "encyclopedia/index",
           },
           items: [
+            {
+            type: "category",
+            label: "Durable Execution",
+            collapsed: true,
+            link: {
+              type: "doc",
+              id: "encyclopedia/durable-execution/index",
+            },
+            items: [
+                    ],
+            },
             "encyclopedia/temporal",
             "encyclopedia/temporal-sdks",
-            "encyclopedia/workflows",
+            {
+              type: "category",
+              label: "Workflows",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/workflows/index",
+              },
+              items: [
+                  "encyclopedia/workflows/workflows-legacy",
+              ],
+            },
             "encyclopedia/activities",
             {
               type: "category",

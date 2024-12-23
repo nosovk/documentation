@@ -1,0 +1,143 @@
+---
+id: index
+title: Durable Execution
+description: Build scalable and reliable applications with the Temporal Durable Execution orchestration framework.
+sidebar_label: Durable Execution
+slug: /durable-execution
+keywords:
+  - concepts
+tags:
+  - Concepts
+---
+
+import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
+
+How would you code if your could couldn't fail?
+Durable Execution creates systems that keep work tasks moving, even through failures or disruptions.
+It tracks progress and state to guarantee reliable completion, no matter what goes wrong.
+Durable Execution lets you build crash-proof applications that maintain state across service restarts and network failures, and so much more.
+
+## The value proposition
+
+Durable Execution is:
+
+- **Stateful and persistent**:
+  Durable Execution tracks state even when your service restarts or experiences failures.
+  It stores checkpoints in external databases and logs, ensuring your system handles outages or crashes without losing progress.
+
+- **Scalable**:
+  Durable Execution grows to handle more tasks in parallel as needed.
+  It scales horizontally, managing additional work without affecting the consistency or reliability of your execution process.
+
+- **Fault tolerant**:
+  Durable Execution handles failures automatically, keeping tasks running even when parts of your system go down.
+  When a failure occurs, it recovers tasks without interrupting your entire application.
+
+- **Designed to separate concerns**:
+  Durable Execution splits task orchestration from the underlying infrastructure.
+  Your app's logic stays focused on the work it needs to do.
+  Durable Execution manages state and errors.
+
+- **Low latency**:
+  Durable Execution is fast and reliable.
+  It processes tasks quickly and efficiently, ensuring short and predictable response times.
+
+- **Won't repeat work**:
+  Durable Execution ensures tasks are not repeated unnecessarily.
+  When a task fails, it retries it using policies designed to ensure success without duplicating work.
+  This keeps the process consistent, eliminating redundant work even when errors arise.
+
+- **Naturally recoverable**:
+  Even in worst-case scenarios, Durable Execution recovers execution without losing progress.
+  It won't diverge from your original work, or add unintended side effects or errors.
+- **Inherently observable**:
+  Durable Execution makes the state, health, and progress of your app fully visible.
+  It tracks tasks in real time, so you see progress, failures, and retries as they happen.
+
+## Focus on flow, and not recovery
+
+With Durable Execution, you focus on workflows and business logic, not on handling errors.
+The following code is real and works:
+
+![](/img/encyclopedia/durable-execution/remind-user-workflow.png)
+
+- **Simpler code**.
+  Move abnormal condition handlers out of your logic.
+  You don't need them with Durable Execution.
+
+- **Run forever.**
+  You don’t need to worry about crashes or system outages, even over years or decades.
+
+- **Runs under every condition.**
+  Durable Execution separates progress tracking from implementation details.
+
+- **Deploy and run at the same time.**
+  Durable Execution makes sure each run follows the original logic and pathway.
+  You can ship updates and patches without changing outcomes for your existing long-running processes.
+
+- **Scale as needed.**
+  Durable Execution scales with your business.
+  Each execution is a unique progress abstraction, so you just add more computing resources to match your needs.
+
+It's really that simple.
+
+## Durable Execution's secret sauce
+
+It’s not really a secret, and it’s not a sauce.
+Durable Execution works by separating state and progress (called an Event History) from the code it executes.
+This abstracted oversight (called "orchestration") happens on a server using a persistent state and progress data store.
+
+- **Encounter trouble calling a third-party service?**
+  Check your retry policy to avoid overloading or abusing the API provider’s capacity.
+  Then run your code again after giving the provider a chance to recover.
+
+- **Hit a situation where your servo motor can’t resolve a requested movement?**
+  Instead of pushing harder, give the dog time to move out of the way or allow the built-in recovery mechanism time to adjust the motor.
+
+- **Did the person who approves your reimbursement go on vacation?**
+  Set a time-out policy and use alternate routing (another coworker) or messaging ("Hey, I'll be out of the office") so every reimbursement gets addressed in time.
+
+With Durable Execution, any problem that recovers automatically over time isn’t really a problem.
+When you run into outlier cases where something is truly broken (like a service provider going out of business), patch your code and safely deploy your fixes.
+You can then replay the abstract execution history to pick up these changes so you can complete your process without losing or repeating work.
+
+## Requirements
+
+Durable Execution depends on a few critical factors to ensure you won’t lose or repeat work.
+
+- **A durable store**:
+  Event History must be saved durably using your server's persistent store.
+  A workflow run, or its abstract execution, must persist forever or until you explicitly no longer need it.
+
+- **Idempotency**:
+  Idempotency means you design tasks to succeed once and only once.
+  An idempotent approach prevents process duplication, like withdrawing money twice or accidentally shipping extra orders.
+  Run-once actions maintain data integrity and prevent costly errors.
+  Idempotency keeps operations from producing additional effects, protecting your processes from accidental or repeated actions, ensuring reliable execution.
+
+- **Determinism**:
+  Durable Execution stores and tracks every workflow as an abstract entity.
+  If you need to restart the process under extreme circumstances, that process must align with the original run.
+  You can't change a random number or a real measurement (like temperature, time, or location) from the first run.
+  If you do, you can't just pick up from where you left off because the work no longer matches the earlier history.
+
+  Durable Execution requires your workflow code to be deterministic.
+  Every time it runs or is replayed, the outcomes must be the same.
+  This is the only way centralized control can provide all of Durable Execution's features.
+
+  Does this mean you can’t use random numbers or run your work on different days or in different environments?
+  Of course not.
+  It means your code must reliably pick up from where it left off without changing the past in any logical way.
+  This is called determinism.
+  It ensures that given the same starting conditions, your workflows always produce the same states and outputs, both intermediate and final, no matter how many times you run them.
+  Your results are reliable and assured.
+
+## Conclusion
+
+Durable Execution helps you build reliable and scalable applications.
+It keeps your workflows running smoothly, even through system failures or disruptions.
+By separating your application logic from task orchestration, Durable Execution ensures that your processes are consistent, reliable, and error-free.
+
+With automatic recovery, Durable Execution guarantees that tasks complete without losing or repeating work.
+It simplifies your code, lets you scale easily, and ensures that your app can handle any challenges along the way.
+Durable Execution makes sure your critical processes keep moving forward, no matter what.
